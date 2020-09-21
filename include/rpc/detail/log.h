@@ -134,15 +134,28 @@ RPCLIB_CREATE_LOG_CHANNEL(global)
 #define LOG_ERROR(...)                                                         \
     rpc::detail::logger::instance().error(rpc_channel_name, __VA_ARGS__)
 
+#ifdef NDEBUG
+
+#define LOG_DEBUG(...)  
+
+#define LOG_TRACE(...)
+
+#define LOG_EXPR(...)
+
+#else
+
 #define LOG_DEBUG(...)                                                         \
-    rpc::detail::logger::instance().debug(rpc_channel_name, __FILE__,    \
-                                             __func__, __LINE__, __VA_ARGS__)
+    rpc::detail::logger::instance().debug(rpc_channel_name, __FILE__,          \
+                                          __func__, __LINE__, __VA_ARGS__)
 
 #define LOG_TRACE(...)                                                         \
-    rpc::detail::logger::instance().trace(rpc_channel_name, __FILE__,    \
-                                             __func__, __LINE__, __VA_ARGS__)
+    rpc::detail::logger::instance().trace(rpc_channel_name, __FILE__,          \
+                                          __func__, __LINE__, __VA_ARGS__)
 
 #define LOG_EXPR(Level, Expr) LOG_##Level("`" #Expr "` = {}", Expr)
+
+#endif
+
 
 #else
 
